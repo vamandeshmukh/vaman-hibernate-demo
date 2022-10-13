@@ -1,0 +1,17 @@
+[
+  {
+    "employeeId": 101,
+    "firstName": "Sonu",
+    "salary": 90000.0
+  },
+  {
+    "employeeId": 102,
+    "firstName": "Monu",
+    "salary": 95000.0
+  },
+  {
+    "employeeId": 103,
+    "firstName": "Tonu",
+    "salary": 85000.0
+  }
+]
