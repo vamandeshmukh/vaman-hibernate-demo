@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceException;
+import javax.persistence.Query;
 
 import com.vaman.hibernate.demo.dao.EmployeeDao;
 import com.vaman.hibernate.demo.exception.EmployeeNotFoundException;
@@ -14,9 +16,21 @@ public class EmployeeService {
 	private EmployeeDao dao = new EmployeeDao();
 	private EntityManager manager = dao.getEntityManager();
 
+	@SuppressWarnings("unchecked")
 	public List<Employee> viewAllEmployees() {
 		System.out.println("viewAllEmployees");
-		return null;
+		dao.beginTransaction();
+		List<Employee> empList;
+		Query query = manager.createQuery("from Employee");
+		try {
+			empList = query.getResultList();
+			dao.commitTransaction();
+			return empList;
+		} catch (PersistenceException e) {
+			System.out.println(e.getMessage());
+			dao.commitTransaction();
+			return null;
+		}
 	}
 
 	public Employee viewEmployeeById(int employeeId) {
@@ -24,8 +38,10 @@ public class EmployeeService {
 		dao.beginTransaction();
 		Employee tempEmp = manager.find(Employee.class, employeeId);
 		dao.commitTransaction();
-		if (null != tempEmp)
+		if (null != tempEmp) {
+			dao.commitTransaction();
 			return tempEmp;
+		}
 		throw new EmployeeNotFoundException("Employee with eid " + employeeId + " does not exist.");
 	}
 
@@ -60,9 +76,8 @@ public class EmployeeService {
 
 	public Employee deleteEmployeeById(int employeeId) {
 		System.out.println("deleteEmployeeById " + employeeId);
-
-		dao.beginTransaction();
 		Employee empToDelete = viewEmployeeById(employeeId);
+		dao.beginTransaction();
 		try {
 			manager.remove(empToDelete);
 			dao.commitTransaction();
