@@ -25,8 +25,12 @@ public class EmployeeDao {
 	public void commitTransaction() {
 
 		manager.getTransaction().commit();
+	}
+
+	public void closeTransaction() {
 		manager.close();
 		factory.close();
+
 	}
 
 }

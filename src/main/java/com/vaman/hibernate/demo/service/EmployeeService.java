@@ -15,11 +15,12 @@ public class EmployeeService {
 	private EntityManager manager = dao.getEntityManager();
 
 	public List<Employee> viewAllEmployees() {
-
+		System.out.println("viewAllEmployees");
 		return null;
 	}
 
 	public Employee viewEmployeeById(int employeeId) {
+		System.out.println("viewEmployeeById " + employeeId);
 		dao.beginTransaction();
 		Employee tempEmp = manager.find(Employee.class, employeeId);
 		dao.commitTransaction();
@@ -29,6 +30,7 @@ public class EmployeeService {
 	}
 
 	public Employee addEmployee(Employee employee) {
+		System.out.println("addEmployee\n" + employee.toString());
 		dao.beginTransaction();
 		try {
 			manager.persist(employee);
@@ -43,6 +45,7 @@ public class EmployeeService {
 	}
 
 	public Employee updateEmployee(Employee employee) {
+		System.out.println("updateEmployee\n" + employee.toString());
 		dao.beginTransaction();
 		try {
 			manager.merge(employee);
@@ -56,6 +59,8 @@ public class EmployeeService {
 	}
 
 	public Employee deleteEmployeeById(int employeeId) {
+		System.out.println("deleteEmployeeById " + employeeId);
+
 		dao.beginTransaction();
 		Employee empToDelete = viewEmployeeById(employeeId);
 		try {
@@ -67,6 +72,5 @@ public class EmployeeService {
 			dao.commitTransaction();
 			return null;
 		}
-
 	}
 }
