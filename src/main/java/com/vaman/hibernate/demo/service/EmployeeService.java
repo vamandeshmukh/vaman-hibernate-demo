@@ -39,7 +39,6 @@ public class EmployeeService {
 		Employee tempEmp = manager.find(Employee.class, employeeId);
 		dao.commitTransaction();
 		if (null != tempEmp) {
-			dao.commitTransaction();
 			return tempEmp;
 		}
 		throw new EmployeeNotFoundException("Employee with eid " + employeeId + " does not exist.");
